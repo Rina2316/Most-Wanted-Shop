@@ -8,10 +8,13 @@
 
     <h2 class="section-title">Новинки</h2>
     <section class="products">
-      <div v-if="loading" class="loader"></div>
-      <p v-else-if="error" class="error-message">
-        Извините, произошла ошибка при загрузке товаров. Пожалуйста, попробуйте позже.
-      </p>
+      <div v-if="loading || error" class="empty-cart">
+        <div v-if="loading" class="loader"></div>
+        <p v-else-if="error" class="error-message">
+          Извините, произошла ошибка при загрузке товаров. Пожалуйста, попробуйте позже.
+        </p>
+      </div>
+
       <Product 
         v-for="product in products" 
         :key="product.id" 
@@ -22,6 +25,7 @@
     <Footer />
   </div>
 </template>
+
 
 
 <script lang="ts">
@@ -110,8 +114,32 @@ export default defineComponent({
   justify-content: center;
   margin-bottom: 100px;
   align-items: center;
+  text-align: center;
+  position: relative; 
+  
+}
+.empty-cart {
+  height: 300px;
+  transition: opacity 0.3s ease-out;
+  opacity: 1;
 }
 
+.empty-cart[style*="display: none"] {
+  opacity: 0;
+}
+
+ .loader,
+.error-message {
+  position: absolute;
+  top: 50%;
+  left: 47%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  color: #275742;
+  margin: 0;
+  display: inline-block;
+  text-align: center;
+}
 .loader {
   width: 60px;
   height: 60px;
@@ -119,10 +147,6 @@ export default defineComponent({
   border-top: 6px solid transparent;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px auto;
 }
 
 @keyframes spin {
@@ -134,13 +158,7 @@ export default defineComponent({
   }
 }
 
-.error-message {
-  font-size: 20px;
-  color: #275742;
-  text-align: center;
-  margin-top: 20px;
-  padding: 0 20px;
-}
+
 
 @media (max-width: 768px) {
   .main {
@@ -161,7 +179,7 @@ display: none;
   }
 
   .loader {
-    margin: 20px 0;
+    left: 40%;
   }
 }
 </style>
